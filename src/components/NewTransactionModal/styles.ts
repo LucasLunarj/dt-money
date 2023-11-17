@@ -38,11 +38,6 @@ export const Content = styled(Dialog.Content)`
       &::placeholder {
         color: ${(props) => props.theme["gray-500"]};
       }
-
-      &:hover {
-        background: ${(props) => props.theme["green-700"]};
-        transition: background-color 0.2s;
-      }
     }
     button[type="submit"] {
       height: 50px;
@@ -54,6 +49,16 @@ export const Content = styled(Dialog.Content)`
       border: 6px;
       margin-top: 1.5rem;
       cursor: pointer;
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      &:not(:disabled):hover {
+        background: ${(props) => props.theme["green-700"]};
+        transition: background-color 0.2s;
+      }
     }
   }
 `;

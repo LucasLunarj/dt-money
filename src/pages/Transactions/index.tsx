@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 import { Header } from "../../components/Header";
 import { Summary } from "../../components/Summary";
 import { SearchForm } from "./components/SearchForm";
@@ -7,29 +7,14 @@ import {
   TransactionsContainer,
   TransactionsTable,
 } from "./styles";
-
-interface TransactionTypes {
-  id: number;
-  description: string;
-  type: "income" | "outcome";
-  price: number;
-  category: string;
-  createdAt: string;
-}
+import { priceFormatter } from "../../utils/formatter";
+import {
+  TransactionContext,
+  TransactionTypes,
+} from "../../contexts/TransactionProvider";
 
 export function Transactions() {
-  const [transactions, setTransactions] = useState<TransactionTypes[]>([]);
-  console.log(transactions);
-  async function loadTransactions() {
-    const response = await fetch("http://localhost:3333/transactions");
-    const data = await response.json();
-
-    setTransactions(data);
-  }
-
-  useEffect(() => {
-    loadTransactions();
-  }, []);
+  const { transactions } = useContext(TransactionContext);
 
   return (
     <div>
@@ -45,7 +30,8 @@ export function Transactions() {
                   <td width="50%">{transaction.description}</td>
                   <td>
                     <PriceHighlight variant={transaction.type}>
-                      {transaction.price}
+                      {transaction.type === "outcome" && "- "}
+                      {priceFormatter.format(transaction.price)}
                     </PriceHighlight>
                   </td>
                   <td>{transaction.category}</td>
